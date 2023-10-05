@@ -83,36 +83,136 @@ length(unique(starwars$species))
 
 1.  Найти самого высокого персонажа.
 
-<!-- -->
+``` r
+starwars %>% slice_max(height) %>% select(name,height)
+```
+
+    # A tibble: 1 × 2
+      name        height
+      <chr>        <int>
+    1 Yarael Poof    264
 
 1.  Найти всех персонажей ниже 170
 
-<!-- -->
+``` r
+starwars %>% filter(height<170) %>% select(name,height)
+```
+
+    # A tibble: 23 × 2
+       name                  height
+       <chr>                  <int>
+     1 C-3PO                    167
+     2 R2-D2                     96
+     3 Leia Organa              150
+     4 Beru Whitesun lars       165
+     5 R5-D4                     97
+     6 Yoda                      66
+     7 Mon Mothma               150
+     8 Wicket Systri Warrick     88
+     9 Nien Nunb                160
+    10 Watto                    137
+    # ℹ 13 more rows
 
 1.  Подсчитать ИМТ (индекс массы тела) для всех персонажей. ИМТ
     подсчитать по формуле 𝐼 = 𝑚/ℎ2 , где 𝑚 – масса (weight), а ℎ – рост
     (height).
 
-<!-- -->
+``` r
+starwars %>% mutate(IMT = mass/(height/100)**2) %>% select(name,IMT)
+```
+
+    # A tibble: 87 × 2
+       name                 IMT
+       <chr>              <dbl>
+     1 Luke Skywalker      26.0
+     2 C-3PO               26.9
+     3 R2-D2               34.7
+     4 Darth Vader         33.3
+     5 Leia Organa         21.8
+     6 Owen Lars           37.9
+     7 Beru Whitesun lars  27.5
+     8 R5-D4               34.0
+     9 Biggs Darklighter   25.1
+    10 Obi-Wan Kenobi      23.2
+    # ℹ 77 more rows
 
 1.  Найти 10 самых “вытянутых” персонажей. “Вытянутость” оценить по
     отношению массы (mass) к росту (height) персонажей.
 
-<!-- -->
+``` r
+starwars %>% mutate(vyt = mass/(height/100)) %>% arrange(vyt) %>% select(name,vyt) %>% top_n(10)
+```
+
+    Selecting by vyt
+
+    # A tibble: 10 × 2
+       name                    vyt
+       <chr>                 <dbl>
+     1 Chewbacca              49.1
+     2 Dexter Jettster        51.5
+     3 Tarfful                58.1
+     4 Bossk                  59.5
+     5 Jek Tono Porkins       61.1
+     6 Darth Vader            67.3
+     7 Owen Lars              67.4
+     8 IG-88                  70  
+     9 Grievous               73.6
+    10 Jabba Desilijic Tiure 776  
 
 1.  Найти средний возраст персонажей каждой расы вселенной Звездных
     войн.
 
-<!-- -->
+``` r
+starwars %>% group_by(species) %>% summarise(mid_age = mean(birth_year, na.rm=TRUE))
+```
+
+    # A tibble: 38 × 2
+       species   mid_age
+       <chr>       <dbl>
+     1 Aleena      NaN  
+     2 Besalisk    NaN  
+     3 Cerean       92  
+     4 Chagrian    NaN  
+     5 Clawdite    NaN  
+     6 Droid        53.3
+     7 Dug         NaN  
+     8 Ewok          8  
+     9 Geonosian   NaN  
+    10 Gungan       52  
+    # ℹ 28 more rows
 
 1.  Найти самый распространенный цвет глаз персонажей вселенной Звездных
     войн.
 
-<!-- -->
+``` r
+starwars %>% group_by(eye_color) %>% summarise(col = n()) %>% slice_max(col)
+```
+
+    # A tibble: 1 × 2
+      eye_color   col
+      <chr>     <int>
+    1 brown        21
 
 1.  Подсчитать среднюю длину имени в каждой расе вселенной Звездных
     войн.
 
-<!-- -->
+``` r
+starwars %>% group_by(species) %>% summarise(mid_len = mean(length(name)))
+```
+
+    # A tibble: 38 × 2
+       species   mid_len
+       <chr>       <dbl>
+     1 Aleena          1
+     2 Besalisk        1
+     3 Cerean          1
+     4 Chagrian        1
+     5 Clawdite        1
+     6 Droid           6
+     7 Dug             1
+     8 Ewok            1
+     9 Geonosian       1
+    10 Gungan          3
+    # ℹ 28 more rows
 
 1.  Оформить отчет в соответствии с шаблоном
