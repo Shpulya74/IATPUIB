@@ -7,7 +7,9 @@ format:
 editor: visual
 ---
 
-## 1. Основные структурные элементы
+## Ход работы
+
+### 1. Основные структурные элементы
 
 In its simplest form, R can be used as an interactive calculator. Type 5 + 7 and press Enter.
 
@@ -118,7 +120,7 @@ You can type the first two letters of the variable name, then hit the Tab key (p
 my_div
 ```
 
-## 2. Рабочее пространство и файлы
+### 2. Рабочее пространство и файлы
 
 Determine which directory your R session is using as its current working directory using getwd().
 
@@ -246,7 +248,7 @@ Go back to your original working directory using setwd(). (Recall that we create
 setwd(old.dir)
 ```
 
-## 3. Последовательности чисел
+### 3. Последовательности чисел
 
 The simplest way to create a sequence of numbers in R is by using the `:` operator. Type 1:20 to see how it works.
 
@@ -332,7 +334,7 @@ Finally, let's say that rather than repeating the vector (0, 1, 2) over and over
 rep(c(0, 1, 2), each = 10)
 ```
 
-## 4. Векторы
+### 4. Векторы
 
 First, create a numeric vector num_vect that contains the values 0.5, 55, -10, and 6.
 

@@ -1,5 +1,5 @@
 ---
-title: "Лабораторная работа №2"
+title: "Лабораторная работа №3"
 author: "Поспелова Ульяна БИСО-03-20"
 format: 
     md:
@@ -21,6 +21,7 @@ select(), filter(), mutate(), arrange(), group_by().
 1\. Сколько встроенных в пакет nycflights13 датафреймов?
 
 ```{r}
+library(nycflights13)
 
 ```
 
