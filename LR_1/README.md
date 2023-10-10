@@ -1,7 +1,9 @@
 # Лабораторная работа №1
 Поспелова Ульяна БИСО-03-20
 
-## 1. Основные структурные элементы
+## Ход работы
+
+### 1. Основные структурные элементы
 
 In its simplest form, R can be used as an interactive calculator. Type
 5 + 7 and press Enter.
@@ -166,7 +168,7 @@ my_div
 
     [1] 3.478505 3.181981 2.146460
 
-## 2. Рабочее пространство и файлы
+### 2. Рабочее пространство и файлы
 
 Determine which directory your R session is using as its current working
 directory using getwd().
@@ -208,7 +210,8 @@ dir().
 dir()
 ```
 
-    [1] "lab1.qmd"       "lab1.rmarkdown"
+    [1] "lab1.qmd"       "lab1.rmarkdown" "mytest2.R"      "mytest3.R"     
+    [5] "README.md"      "testdir"        "testdir2"      
 
 As we go through this lesson, you should be examining the help page for
 each new function. Check out the help page for list.files with the
@@ -243,6 +246,8 @@ called “testdir”.
 dir.create("testdir")
 ```
 
+    Warning in dir.create("testdir"): 'testdir' уже существует
+
 Set your working directory to “testdir” with the setwd() command.
 
 ``` r
@@ -265,7 +270,8 @@ check this by listing all the files in the current directory.
 list.files()
 ```
 
-    [1] "lab1.qmd"       "lab1.rmarkdown" "mytest.R"       "testdir"       
+    [1] "lab1.qmd"       "lab1.rmarkdown" "mytest.R"       "mytest2.R"     
+    [5] "mytest3.R"      "README.md"      "testdir"        "testdir2"      
 
 Check to see if “mytest.R” exists in the working directory using the
 file.exists() function.
@@ -283,9 +289,9 @@ file.info("mytest.R")
 ```
 
              size isdir mode               mtime               ctime
-    mytest.R    0 FALSE  666 2023-10-05 10:19:59 2023-10-05 10:19:59
+    mytest.R    0 FALSE  666 2023-10-10 16:51:34 2023-10-10 16:51:34
                            atime exe
-    mytest.R 2023-10-05 10:19:59  no
+    mytest.R 2023-10-10 16:51:34  no
 
 Change the name of the file “mytest.R” to “mytest2.R” by using
 file.rename().
@@ -302,7 +308,7 @@ Make a copy of “mytest2.R” called “mytest3.R” using file.copy().
 file.copy("mytest2.R","mytest3.R")
 ```
 
-    [1] TRUE
+    [1] FALSE
 
 Provide the relative path to the file “mytest3.R” by using file.path().
 
@@ -339,6 +345,9 @@ dir.create() and file.path().
 dir.create(file.path('testdir2', 'testdir3'), recursive = TRUE)
 ```
 
+    Warning in dir.create(file.path("testdir2", "testdir3"), recursive = TRUE):
+    'testdir2\testdir3' уже существует
+
 Go back to your original working directory using setwd(). (Recall that
 we created the variable old.dir with the full path for the orginal
 working directory at the start of these questions.)
@@ -347,7 +356,7 @@ working directory at the start of these questions.)
 setwd(old.dir)
 ```
 
-## 3. Последовательности чисел
+### 3. Последовательности чисел
 
 The simplest way to create a sequence of numbers in R is by using the
 `:` operator. Type 1:20 to see how it works.
@@ -480,7 +489,7 @@ rep(c(0, 1, 2), each = 10)
 
      [1] 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2
 
-## 4. Векторы
+### 4. Векторы
 
 First, create a numeric vector num_vect that contains the values 0.5,
 55, -10, and 6.
