@@ -1,0 +1,26 @@
+"0","starwars %>% glimpse()"
+"1","Rows: 87"
+"1",""
+"1","
+"
+"1","Columns: 14"
+"1",""
+"1","
+"
+"1","$ name       [3m[38;5;246m<chr>[39m[23m ""Luke Skywalker"", ""C-3PO"", ""R2-D2"", ""Darth Vader"", ""Leia Organa"", ""Owen Lars"",…
+$ height     [3m[38;5;246m<int>[39m[23m 172, 167, 96, 202, 150, 178, 165, 97, 183, 182, 188, 180, 228, 180, 173, 175, …
+$ mass       [3m[38;5;246m<dbl>[39m[23m 77.0, 75.0, 32.0, 136.0, 49.0, 120.0, 75.0, 32.0, 84.0, 77.0, 84.0, NA, 112.0,…
+$ hair_color [3m[38;5;246m<chr>[39m[23m ""blond"", NA, NA, ""none"", ""brown"", ""brown, grey"", ""brown"", NA, ""black"", ""auburn…
+$ skin_color [3m[38;5;246m<chr>[39m[23m ""fair"", ""gold"", ""white, blue"", ""white"", ""light"", ""light"", ""light"", ""white, red…
+$ eye_color  [3m[38;5;246m<chr>[39m[23m ""blue"", ""yellow"", ""red"", ""yellow"", ""brown"", ""blue"", ""blue"", ""red"", ""brown"", ""b…
+$ birth_year [3m[38;5;246m<dbl>[39m[23m 19.0, 112.0, 33.0, 41.9, 19.0, 52.0, 47.0, NA, 24.0, 57.0, 41.9, 64.0, 200.0, …
+$ sex        [3m[38;5;246m<chr>[39m[23m ""male"", ""none"", ""none"", ""male"", ""female"", ""male"", ""female"", ""none"", ""male"", ""m…
+$ gender     [3m[38;5;246m<chr>[39m[23m ""masculine"", ""masculine"", ""masculine"", ""masculine"", ""feminine"", ""masculine"", ""…
+$ homeworld  [3m[38;5;246m<chr>[39m[23m ""Tatooine"", ""Tatooine"", ""Naboo"", ""Tatooine"", ""Alderaan"", ""Tatooine"", ""Tatooine…
+$ species    [3m[38;5;246m<chr>[39m[23m ""Human"", ""Droid"", ""Droid"", ""Human"", ""Human"", ""Human"", ""Human"", ""Droid"", ""Human…
+$ films      [3m[38;5;246m<list>[39m[23m <""The Empire Strikes Back"", ""Revenge of the Sith"", ""Return of the Jedi"", ""A N…
+$ vehicles   [3m[38;5;246m<list>[39m[23m <""Snowspeeder"", ""Imperial Speeder Bike"">, <>, <>, <>, ""Imperial Speeder Bike""…
+$ starships  [3m[38;5;246m<list>[39m[23m <""X-wing"", ""Imperial shuttle"">, <>, <>, ""TIE Advanced x1"", <>, <>, <>, <>, ""X…"
+"1",""
+"1","
+"
