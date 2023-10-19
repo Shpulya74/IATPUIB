@@ -18,77 +18,131 @@ select(), filter(), mutate(), arrange(), group_by().
 
 ## Задание
 
-1\. Сколько встроенных в пакет nycflights13 датафреймов?
-
 ```{r}
 library(nycflights13)
-
+library(dplyr)
 ```
+
+1\. Сколько встроенных в пакет nycflights13 датафреймов?
+
+В пакете nycflights13 5 датафреймов: airlines, airports, flights, planes, weather. 
 
 2\. Сколько строк в каждом датафрейме?
 
 ```{r}
+airlines %>% nrow()
+```
 
+```{r}
+airports %>% nrow()
+```
+
+```{r}
+flights %>% nrow()
+```
+
+```{r}
+planes %>% nrow()
+```
+
+```{r}
+weather %>% nrow()
 ```
 
 3\. Сколько столбцов в каждом датафрейме?
 
 ```{r}
+airlines %>% ncol()
+```
 
+```{r}
+airports %>% ncol()
+```
+
+```{r}
+flights %>% ncol()
+```
+
+```{r}
+planes %>% ncol()
+```
+
+```{r}
+weather %>% ncol()
 ```
 
 4\. Как просмотреть примерный вид датафрейма?
 
 ```{r}
-
+airlines %>% glimpse()
 ```
+
+```{r}
+airports %>% glimpse()
+```
+
+```{r}
+flights %>% glimpse()
+```
+
+```{r}
+planes %>% glimpse()
+```
+
+```{r}
+weather %>% glimpse()
+```
+
 
 5\. Сколько компаний-перевозчиков (carrier) учитывают эти наборы данных (представлено в наборах данных)?
 
 ```{r}
-
+length(unique(airlines$carrier))
 ```
 
 6\. Сколько рейсов принял аэропорт John F Kennedy Intl в мае?
 
 ```{r}
-
+a <- (airports %>% filter(name == "John F Kennedy Intl") %>% select(faa))
+flights %>% filter(month == 5, dest == as.character(a)) %>% nrow
 ```
 
 7\. Какой самый северный аэропорт?
 
 ```{r}
-
+airports %>% slice_max(lat) %>% select(faa,name)
 ```
 
 8\. Какой аэропорт самый высокогорный (находится выше всех над уровнем моря)?
 
 ```{r}
-
+airports %>% slice_max(alt) %>% select(faa,name)
 ```
 
 9\. Какие бортовые номера у самых старых самолетов?
 
 ```{r}
-
+b <- planes %>% slice_min(year) %>% select(year)
+planes %>% filter(year == as.character(b)) %>% select(tailnum,year)
 ```
 
 10\. Какая средняя температура воздуха была в сентябре в аэропорту John F Kennedy Intl (в градусах Цельсия).
 
 ```{r}
-
+c <- airports %>% filter(name == 'John F Kennedy Intl') %>% select(faa)
+weather %>% filter(month == 9, origin == as.character(c)) %>% summarise('temp'= ((temp_mean = mean(temp, 0, na.rm  =TRUE))-32)*5/9)
 ```
 
 11\. Самолеты какой авиакомпании совершили больше всего вылетов в июне?
 
 ```{r}
-
+flights %>% filter(month == 6) %>% group_by(carrier) %>% summarize(n_flights = n()) %>% arrange(desc(n_flights)) %>% top_n(1)
 ```
 
 12\. Самолеты какой авиакомпании задерживались чаще других в 2013 году?
 
 ```{r}
-
+flights %>% filter(year == 2013) %>% group_by(carrier) %>% filter(dep_delay > 0, arr_delay > 0) %>% summarise('delays' = n()) %>% arrange(desc(delays)) %>% top_n(1)
 ```
 
 13\. Оформить отчет в соответствии с шаблоном
