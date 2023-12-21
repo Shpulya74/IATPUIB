@@ -97,28 +97,14 @@ dataset_2 %>% glimpse()
 столбцов в соответствии с типом данных.
 
 ``` r
-dataset_1 <- dataset_1 %>% 
-  mutate_at(vars(BSSID, Privacy, Cipher, Authentication, LAN.IP, ESSID), trimws) %>%
-  mutate_at(vars(BSSID, Privacy, Cipher, Authentication, LAN.IP, ESSID), na_if, "") %>% 
-  mutate_at(vars(First.time.seen, Last.time.seen), as.POSIXct, format = "%Y-%m-%d %H:%M:%S")
+dataset_1 <- dataset_1 %>% mutate_at(vars(BSSID, Privacy, Cipher, Authentication, LAN.IP, ESSID), trimws) %>% mutate_at(vars(BSSID, Privacy, Cipher, Authentication, LAN.IP, ESSID), na_if, "")
+dataset_1$First.time.seen <- as.POSIXct(dataset_1$First.time.seen, origin="1970-01-01")
+dataset_1$Last.time.seen <- as.POSIXct(dataset_1$Last.time.seen, origin="1970-01-01")
 
-dataset_2 <- dataset_2 %>% 
-  mutate_at(vars(Station.MAC, BSSID, Probed.ESSIDs), trimws) %>%
-  mutate_at(vars(Station.MAC, BSSID, Probed.ESSIDs), na_if, "")
-dataset_2 <- dataset_2 %>% 
-  mutate_at(vars(First.time.seen, Last.time.seen), 
-            as.POSIXct, 
-            format = "%Y-%m-%d %H:%M:%S") %>%
-  mutate_at(vars(Power, X..packets), as.integer) %>%
-  filter(!is.na(BSSID))
+dataset_2 <- dataset_2 %>% mutate_at(vars(Station.MAC, BSSID, Probed.ESSIDs), trimws) %>% mutate_at(vars(Station.MAC, BSSID, Probed.ESSIDs), na_if, "")
+dataset_2$First.time.seen <- as.POSIXct(dataset_2$First.time.seen, format = "%Y-%m-%d %H:%M:%S")
+dataset_2$Last.time.seen <- as.POSIXct(dataset_2$Last.time.seen, format = "%Y-%m-%d %H:%M:%S")
 ```
-
-    Warning: There were 2 warnings in `mutate()`.
-    The first warning was:
-    ℹ In argument: `Power = .Primitive("as.integer")(Power)`.
-    Caused by warning:
-    ! в результате преобразования созданы NA
-    ℹ Run `dplyr::last_dplyr_warnings()` to see the 1 remaining warning.
 
 3\. Просмотрите общую структуру данных с помощью функции glimpse().
 
@@ -148,13 +134,13 @@ dataset_1 %>% glimpse()
 dataset_2 %>% glimpse()
 ```
 
-    Rows: 12,084
+    Rows: 12,269
     Columns: 7
     $ Station.MAC     <chr> "CA:66:3B:8F:56:DD", "96:35:2D:3D:85:E6", "5C:3A:45:9E…
     $ First.time.seen <dttm> 2023-07-28 09:13:03, 2023-07-28 09:13:03, 2023-07-28 …
     $ Last.time.seen  <dttm> 2023-07-28 10:59:44, 2023-07-28 09:13:03, 2023-07-28 …
-    $ Power           <int> -33, -65, -39, -61, -53, -43, -31, -71, -74, -65, -45,…
-    $ X..packets      <int> 858, 4, 432, 958, 1, 344, 163, 3, 115, 437, 265, 77, 7…
+    $ Power           <chr> " -33", " -65", " -39", " -61", " -53", " -43", " -31"…
+    $ X..packets      <chr> "      858", "        4", "      432", "      958", " …
     $ BSSID           <chr> "BE:F1:71:D5:17:8B", "(not associated)", "BE:F1:71:D6:…
     $ Probed.ESSIDs   <chr> "C322U13 3965", "IT2 Wireless", "C322U21 0566", "C322U…
 
@@ -857,10 +843,195 @@ oui
 dataset_2 %>% select(Station.MAC) %>% filter(!Station.MAC %in% grep(":",dataset_2$Station.MAC, value = TRUE))
 ```
 
-              Station.MAC
-    1        vestis.local
-    2   AndroidShare_2061
-    3 MTSRouter_5G_142878
+                                                                             Station.MAC
+    1                                                                         Galaxy A71
+    2                                                                    Galaxy A30s5208
+    3                                                                       C322U06 9080
+    4                                                                              Kesha
+    5                                                                                Дом
+    6                                                                      MIREA_HOTSPOT
+    7                                                                              Kesha
+    8                                                                              Kesha
+    9                                                                                M26
+    10                                                                             Kesha
+    11                                                                           kmkdz_g
+    12                                                                  Moscow_WiFi_Free
+    13                                                          AAAAADVpTWoADwFlRedmi 4X
+    14                                                                             Kesha
+    15                                                                     helvetia-free
+    16                                                                      MIREA_GUESTS
+    17                                                                             Kesha
+    18                                                                 RT-5GHz_WiFi_5756
+    19                                                                      vestis.local
+    20                                                                             Kesha
+    21                                                                            -D-13-
+    22                                                                             Kesha
+    23                                                                             Kesha
+    24                                                                               M26
+    25                                                                             Kesha
+    26                                                                      MGTS_5makmak
+    27                                                                     helvetia-free
+    28                                                                               M26
+    29                                                                      TP-Link_3144
+    30                                                                               M26
+    31                                                                               M26
+    32                                                                                Шк
+    33                                                                                Шк
+    34                                                                 AndroidShare_8397
+    35  \\xA7\\xDF\\xA7\\xD1\\xA7\\xE3\\xA7\\xE4\\xA7\\xD6\\xA7\\xE9\\xA7\\xDC\\xA7\\xD1
+    36                                                                 AndroidShare_8795
+    37                                                                       home 466_5G
+    38                                                                             Kesha
+    39                                                                             Kesha
+    40                                                                           MT_FREE
+    41                                                                          Redmi 12
+    42                                                                 AndroidShare_2335
+    43                                                                 AndroidShare_2061
+    44                                                                 AndroidShare_2335
+    45                                                                         KHRISTAKI
+    46                                                               MTSRouter_5G_142878
+    47                                                                 AndroidShare_1901
+    48                                                                 AndroidShare_1901
+    49                                                                        拯救者 Y70
+    50                                                                 AndroidShare_1901
+    51                                                                 AndroidShare_1901
+    52                                                                 AndroidShare_1576
+    53                                                                      MIREA_GUESTS
+    54                                                                        Beeline121
+    55                                                                           edeeeèe
+    56                                                                 AndroidShare_1576
+    57                                                                        Beeline121
+    58                                                                                it
+    59                                                                           edeeeèe
+    60                                                                           edeeeèe
+    61                                                                 AndroidShare_1901
+    62                                                          AAAAADVpTWoADwFlRedmi 4X
+    63                                                                           edeeeèe
+    64                                                                     Snickers_ASSA
+    65                                                                 AndroidShare_1901
+    66                                                                 AndroidShare_1901
+    67                                                                 AndroidShare_1576
+    68                                                                 AndroidShare_1901
+    69                                                                 AndroidShare_1901
+    70                                                                 AndroidShare_1901
+    71                                                                            podval
+    72                                                                 AndroidShare_1901
+    73                                                                          Hornet24
+    74                                                                                 1
+    75                                                                 AndroidShare_1901
+    76                                                                                it
+    77                                                                                it
+    78                                                                           edeeeèe
+    79                                                                 AndroidShare_1901
+    80                                                                 AndroidShare_1901
+    81                                                                                it
+    82                                                                        Beeline121
+    83                                                                         CPPK_Free
+    84                                                                      SevenSky2.4G
+    85                                                                 AndroidShare_1901
+    86                                                                        Beeline121
+    87                                                                 AndroidShare_1901
+    88                                                                 AndroidShare_1576
+    89                                                                 AndroidShare_1901
+    90                                                                 AndroidShare_1901
+    91                                                                        Beeline121
+    92                                                                        Beeline121
+    93                                                                 AndroidShare_1901
+    94                                                                 AndroidShare_1901
+    95                                                                                it
+    96                                                                        Beeline121
+    97                                                                           edeeeèe
+    98                                                                 AndroidShare_1901
+    99                                                                           edeeeèe
+    100                                                                      Timo Resort
+    101                                                                       Beeline121
+    102                                                                       Beeline121
+    103                                                                          edeeeèe
+    104                                                                RT-5GHz_WiFi_5756
+    105                                                                RT-5GHz_WiFi_5756
+    106                                                                 MTS_GPON5_ac0968
+    107                                                                AndroidShare_1901
+    108                                                                RT-5GHz_WiFi_5756
+    109                                                                               it
+    110                                                                    helvetia-free
+    111                                                                    helvetia-free
+    112                                                                AndroidShare_1901
+    113                                                                     MIREA_GUESTS
+    114                                                         BgAAAFytPg4AHwF7Redmi 4A
+    115                                                                    helvetia-free
+    116                                                                AndroidShare_1901
+    117                                                             \\xAC\\xBA\\xAC\\xDC
+    118                                                             \\xAC\\xBA\\xAC\\xDC
+    119                                                                AndroidShare_1901
+    120                                                                          edeeeèe
+    121                                                                AndroidShare_1901
+    122                                                                             WiFi
+    123                                                                       lenovo_pad
+    124                                                                          edeeeèe
+    125                                                                AndroidShare_1901
+    126                                                                              RST
+    127                                                                       Beeline121
+    128                                                                AndroidShare_1901
+    129                                                                AndroidShare_1901
+    130                                                                          edeeeèe
+    131                                                                AndroidShare_1901
+    132                                                                AndroidShare_1901
+    133                                                                          edeeeèe
+    134                                                                AndroidShare_1576
+    135                                                                       Beeline121
+    136                                                                AndroidShare_1901
+    137                                                                AndroidShare_1901
+    138                                                                AndroidShare_1901
+    139                                                                                1
+    140                                                                AndroidShare_1901
+    141                                                                AndroidShare_1901
+    142                                                                    Snickers_ASSA
+    143                                                                Beeline_5G_F2F425
+    144                                                                AndroidShare_1901
+    145                                                                                1
+    146                                                                       Beeline121
+    147                                                                          edeeeèe
+    148                                                                AndroidShare_1901
+    149                                                                AndroidShare_1576
+    150                                                                AndroidShare_1901
+    151                                                                AndroidShare_1901
+    152                                                                AndroidShare_1901
+    153                                                                AndroidShare_1901
+    154                                                                               it
+    155                                                                AndroidShare_1901
+    156                                                                AndroidShare_1901
+    157                                                                          edeeeèe
+    158                                                                       Beeline121
+    159                                                                AndroidShare_1901
+    160                                                                AndroidShare_1901
+    161                                                                       Beeline121
+    162                                                                AndroidShare_1901
+    163                                                                          edeeeèe
+    164                                                                          edeeeèe
+    165                                                                          edeeeèe
+    166                                                                       Beeline121
+    167                                                                               it
+    168                                                                               it
+    169                                                                       Beeline121
+    170                                                                AndroidShare_1901
+    171                                                                AndroidShare_1901
+    172                                                                AndroidShare_1576
+    173                                                                       Beeline121
+    174                                                                     vestis.local
+    175                                                                AndroidShare_1901
+    176                                                                AndroidShare_1901
+    177                                                                          edeeeèe
+    178                                                                AndroidShare_1901
+    179                                                                       Beeline121
+    180                                                                          edeeeèe
+    181                                                                AndroidShare_1901
+    182                                                                               Шк
+    183                                                                AndroidShare_1901
+    184                                                                          edeeeèe
+    185                                                                               Шк
+    186                                                                AndroidShare_1901
+    187                                                                          edeeeèe
+    188                                                                               it
 
 3\. Кластеризовать запросы от устройств к точкам доступа по их именам.
 Определить время появления устройства в зоне радиовидимости и время
@@ -876,17 +1047,17 @@ dataset_2 %>% filter(!is.na(Probed.ESSIDs)) %>% group_by(Station.MAC, Probed.ESS
     # A tibble: 1,477 × 5
     # Groups:   Station.MAC [1,477]
        Station.MAC       Probed.ESSIDs first               last                Power
-       <chr>             <chr>         <dttm>              <dttm>              <int>
-     1 00:90:4C:E6:54:54 Redmi         2023-07-28 09:16:59 2023-07-28 10:21:15   -65
-     2 00:95:69:E7:7C:ED nvripcsuite   2023-07-28 09:13:11 2023-07-28 11:56:13   -55
-     3 00:95:69:E7:7D:21 nvripcsuite   2023-07-28 09:13:15 2023-07-28 11:56:17   -33
-     4 00:95:69:E7:7F:35 nvripcsuite   2023-07-28 09:13:11 2023-07-28 11:56:07   -69
-     5 00:F4:8D:F7:C5:19 Redmi 12      2023-07-28 10:45:04 2023-07-28 11:43:26   -73
-     6 02:00:00:00:00:00 xt3 w64dtgv5… 2023-07-28 09:54:40 2023-07-28 11:55:36   -67
-     7 02:06:2B:A5:0C:31 Avenue611     2023-07-28 09:55:12 2023-07-28 09:55:12   -65
-     8 02:1D:0F:A4:94:74 iPhone (Дима… 2023-07-28 09:57:08 2023-07-28 09:57:08   -61
-     9 02:32:DC:56:5C:82 Timo Resort   2023-07-28 10:58:23 2023-07-28 10:58:24   -84
-    10 02:35:E9:C2:44:5F iPhone (Макс… 2023-07-28 10:00:55 2023-07-28 10:00:55   -88
+       <chr>             <chr>         <dttm>              <dttm>              <chr>
+     1 00:90:4C:E6:54:54 Redmi         2023-07-28 09:16:59 2023-07-28 10:21:15 " -6…
+     2 00:95:69:E7:7C:ED nvripcsuite   2023-07-28 09:13:11 2023-07-28 11:56:13 " -5…
+     3 00:95:69:E7:7D:21 nvripcsuite   2023-07-28 09:13:15 2023-07-28 11:56:17 " -3…
+     4 00:95:69:E7:7F:35 nvripcsuite   2023-07-28 09:13:11 2023-07-28 11:56:07 " -6…
+     5 00:F4:8D:F7:C5:19 Redmi 12      2023-07-28 10:45:04 2023-07-28 11:43:26 " -7…
+     6 02:00:00:00:00:00 xt3 w64dtgv5… 2023-07-28 09:54:40 2023-07-28 11:55:36 " -6…
+     7 02:06:2B:A5:0C:31 Avenue611     2023-07-28 09:55:12 2023-07-28 09:55:12 " -6…
+     8 02:1D:0F:A4:94:74 iPhone (Дима… 2023-07-28 09:57:08 2023-07-28 09:57:08 " -6…
+     9 02:32:DC:56:5C:82 Timo Resort   2023-07-28 10:58:23 2023-07-28 10:58:24 " -8…
+    10 02:35:E9:C2:44:5F iPhone (Макс… 2023-07-28 10:00:55 2023-07-28 10:00:55 " -8…
     # ℹ 1,467 more rows
 
 4\. Оценить стабильность уровня сигнала внури кластера во времени.
@@ -897,9 +1068,9 @@ dataset_2 %>% filter(!is.na(Probed.ESSIDs),!is.na(Power) ) %>% group_by(Station.
 ```
 
     # A tibble: 1 × 4
-      Station.MAC       first               last                Power
-      <chr>             <dttm>              <dttm>              <int>
-    1 B8:27:EB:59:FA:0E 2023-07-28 09:13:36 2023-07-28 11:44:04    -1
+      Station.MAC       first               last                Power 
+      <chr>             <dttm>              <dttm>              <chr> 
+    1 8A:45:77:F9:7F:F4 2023-07-28 10:00:55 2023-07-28 10:00:55 " -89"
 
 ## Оценка результатов
 

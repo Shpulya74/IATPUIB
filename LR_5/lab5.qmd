@@ -47,20 +47,13 @@ dataset_2 %>% glimpse()
 2\. Привести датасеты в вид “аккуратных данных”, преобразовать типы столбцов в соответствии с типом данных.
 
 ```{r}
-dataset_1 <- dataset_1 %>% 
-  mutate_at(vars(BSSID, Privacy, Cipher, Authentication, LAN.IP, ESSID), trimws) %>%
-  mutate_at(vars(BSSID, Privacy, Cipher, Authentication, LAN.IP, ESSID), na_if, "") %>% 
-  mutate_at(vars(First.time.seen, Last.time.seen), as.POSIXct, format = "%Y-%m-%d %H:%M:%S")
+dataset_1 <- dataset_1 %>% mutate_at(vars(BSSID, Privacy, Cipher, Authentication, LAN.IP, ESSID), trimws) %>% mutate_at(vars(BSSID, Privacy, Cipher, Authentication, LAN.IP, ESSID), na_if, "")
+dataset_1$First.time.seen <- as.POSIXct(dataset_1$First.time.seen, origin="1970-01-01")
+dataset_1$Last.time.seen <- as.POSIXct(dataset_1$Last.time.seen, origin="1970-01-01")
 
-dataset_2 <- dataset_2 %>% 
-  mutate_at(vars(Station.MAC, BSSID, Probed.ESSIDs), trimws) %>%
-  mutate_at(vars(Station.MAC, BSSID, Probed.ESSIDs), na_if, "")
-dataset_2 <- dataset_2 %>% 
-  mutate_at(vars(First.time.seen, Last.time.seen), 
-            as.POSIXct, 
-            format = "%Y-%m-%d %H:%M:%S") %>%
-  mutate_at(vars(Power, X..packets), as.integer) %>%
-  filter(!is.na(BSSID))
+dataset_2 <- dataset_2 %>% mutate_at(vars(Station.MAC, BSSID, Probed.ESSIDs), trimws) %>% mutate_at(vars(Station.MAC, BSSID, Probed.ESSIDs), na_if, "")
+dataset_2$First.time.seen <- as.POSIXct(dataset_2$First.time.seen, format = "%Y-%m-%d %H:%M:%S")
+dataset_2$Last.time.seen <- as.POSIXct(dataset_2$Last.time.seen, format = "%Y-%m-%d %H:%M:%S")
 ```
 
 3\. Просмотрите общую структуру данных с помощью функции glimpse().
