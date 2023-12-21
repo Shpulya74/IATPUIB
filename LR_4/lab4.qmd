@@ -27,9 +27,10 @@ editor: visual
 
 ```{r}
 library(readr)
+library(dplyr)
 ```
 ```{r}
-header <- read.csv("D:/Downloads/header.csv")
+header <- read.csv("header.csv")
 ```
 
 ```{r}
@@ -39,53 +40,104 @@ header
 Для чтения логов продублируем первую строку файла, чтобы она не терялась в названии столбцов.
 
 ```{r}
-dns <- read.csv('D:/Downloads/dns.log',sep ='\t')
+dns <- read.csv("dns.log",sep ='\t')
 ```
-
-
 
 2\. Добавьте пропущенные данные о структуре данных (назначении столбцов).
 
 ```{r}
-
+names(dns) <- c("ts","uid","id.orig_h","id.orig_p","id.resp_h","id.resp_p","proto","trans_id","query","qclass","qclass_name","qtype","qtype_name","rcode","rcode_name","AA","TC", "RD","RA","Z","answers","TTLs","rejected")
 ```
-
 
 3\. Преобразуйте данные в столбцах в нужный формат.
 
-
-
 4\. Просмотрите общую структуру данных с помощью функции glimpse().
 
+```{r}
+dns %>% glimpse()
+```
 
 
 ### Анализ
 
 5\. Сколько участников информационного обмена в сети Доброй Организации?
 
+```{r}
+dns %>% group_by(uid) %>% summarize(total = n()) %>% nrow()
+```
 
 
 6\. Какое соотношение участников обмена внутри сети и участников обращений к внешним ресурсам?
 
+```{r}
+dns %>% filter(qtype_name != "A", qtype_name != "AA", qtype_name != "AAA", qtype_name != "AAAA") %>% group_by(uid) %>% summarize(total = n()) %>% nrow() / dns %>% filter(qtype_name == "A"|qtype_name == "AA"| qtype_name == "AAA" | qtype_name == "AAAA") %>% group_by(uid) %>% summarize(total = n()) %>% nrow()
+```
 
 
 7\. Найдите топ-10 участников сети, проявляющих наибольшую сетевую активность.
 
+```{r}
+dns %>% select(id.orig_h) %>% group_by(id.orig_h) %>% summarize(total = n()) %>% arrange(desc(total)) %>% head(10)
+```
 
 
 8\. Найдите топ-10 доменов, к которым обращаются пользователи сети и соответственное количество обращений.
 
+```{r}
+my_top_10 <- dns %>% select(query, qtype_name) %>% filter(qtype_name == "A"|qtype_name == "AA"| qtype_name == "AAA" | qtype_name == "AAAA") %>% group_by(query) %>% summarize(total = n()) %>% arrange(desc(total)) %>% head(10)
+my_top_10
+```
 
 
 9\. Опеределите базовые статистические характеристики (функция summary()) интервала времени между последовательным обращениями к топ-10 доменам.
 
+```{r}
+summary(diff((dns %>% filter(tolower(query) %in% my_top_10$query) %>% arrange(ts))$ts))
+```
 
 
 10\. Часто вредоносное программное обеспечение использует DNS канал в качестве канала управления, периодически отправляя запросы на подконтрольный злоумышленникам DNS сервер. По периодическим запросам на один и тот же домен можно выявить скрытый DNS канал. Есть ли такие IP адреса в исследуемом датасете?
 
+```{r}
+ip_domain_counts <- dns %>%
+  group_by(ip = tolower(id.orig_h), domain = tolower(query)) %>%
+  summarise(request_count = n()) %>%
+  filter(request_count > 1)
+```
 
+```{r}
+unique_ips_with_periodic_requests <- unique(ip_domain_counts$ip)
+unique_ips_with_periodic_requests %>% length()
+```
+
+```{r}
+unique_ips_with_periodic_requests %>% head()
+```
 
 ### Обогащение данных
 
 11\. Определите местоположение (страну, город) и организацию-провайдера для топ-10 доменов.
 
+```{r}
+my_top_10
+```
+
+1) teredo.ipv6.microsoft.com: United States, Redmond, Microsoft Corporation
+
+2) tools.google.com: United States, Mountain View, Google
+
+3) www.apple.com: Germany, Frankfurt, Akamai techonologies
+
+4) safebrowsing.clients.google.com: United States, Mountain View, Google
+
+5) imap.gmail.com: United States, Iston, Google LLC
+
+6) stats.norton.com: GreatBritain, Washington, Microsoft Corporation
+
+7) www.google.com: Unites States, Mountain View, Google
+
+8) ratings-wrs.symantec.com: United States, Redmond, Microsoft Corporation
+
+9) api.twitter.com: United States, San Francisco, Twitter inc
+
+10) api.facebook.com: Unites States, Menlo Park, Facebook inc
